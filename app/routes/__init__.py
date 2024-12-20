@@ -3,6 +3,7 @@ from app.routes.user import User
 from app.routes.login import Login
 from app.routes.signup import Signup
 from app.routes.tweet import Tweet
+from app.routes.food_trucks import FoodTrucks, FoodTrucksPostgis
 
 
 def register_routes(api):
@@ -11,3 +12,5 @@ def register_routes(api):
     api.add_resource(Signup, "/signup")
     api.add_resource(Login, "/login")
     api.add_resource(Tweet, "/tweet")
+    api.add_resource(FoodTrucks, "/food-trucks")
+    api.add_resource(FoodTrucksPostgis, "/food-trucks-postgis")
