@@ -1,6 +1,5 @@
 import datetime
 import jwt
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Text
 from marshmallow import Schema, fields
 from app.models.base import Base
