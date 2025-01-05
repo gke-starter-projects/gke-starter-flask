@@ -130,3 +130,6 @@ dmypy.json
 
 # Docker compose
 ./db
+
+# Custom
+scratch

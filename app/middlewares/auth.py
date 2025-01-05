@@ -11,8 +11,10 @@ def requires_auth(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
         try:
-            obj = jwt.decode(g.token, key=Config.JWT_SECRET, algorithms=Config.JWT_ALGORITHM)
-            user_id = obj['sub']
+            obj = jwt.decode(
+                g.token, key=Config.JWT_SECRET, algorithms=Config.JWT_ALGORITHM
+            )
+            user_id = int(obj["sub"])  # Int cast it back to primary key
         except Exception as e:
             print(e, g.token)
             raise Unauthorized()

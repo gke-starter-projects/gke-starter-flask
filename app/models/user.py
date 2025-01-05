@@ -3,10 +3,9 @@ import jwt
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Text
 from marshmallow import Schema, fields
-
+from app.models.base import Base
 from app.config import Config
-
-Base = declarative_base()
+from sqlalchemy.orm import relationship
 
 
 class UserSchema(Schema):
@@ -23,6 +22,7 @@ class User(Base):
     email = Column(Text, unique=True)
     name = Column(Text, nullable=False)
     password = Column(Text, nullable=False)
+    tweets = relationship("Tweet", back_populates="user")
 
     def __init__(self, email, name, password):
         self.email = email
@@ -33,10 +33,11 @@ class User(Base):
         return UserSchema().dump(self)
 
     def generate_token(self):
+        now = datetime.datetime.now(datetime.timezone.utc)
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=15),
-            'iat': datetime.datetime.utcnow(),
-            'sub': self.id
+            "exp": now + datetime.timedelta(minutes=15),
+            "iat": now,
+            "sub": str(self.id),
         }
 
         return jwt.encode(
