@@ -15,3 +15,6 @@ docs
 .env
 env_sample
 .DS_Store
+
+# Custom
+scratch

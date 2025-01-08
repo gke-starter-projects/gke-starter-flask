@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-starter-flask
+  labels:
+    app: gke-starter-flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gke-starter-flask
+  template:
+    metadata:
+      labels:
+        app: gke-starter-flask
+    spec:
+      serviceAccountName: cloudsql
+      containers:
+      - name: gke-starter-flask
+        image: us-central1-docker.pkg.dev/starter-project-447001/starter-project/gke-starter-flask:latest
+        ports:
+        - containerPort: 5002
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5002
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        env:
+          - name: ENV
+            value: "production"
+          - name: DEBUG
+            value: "0"
+          - name: LOG_LEVEL
+            value: "INFO"
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: DB_USERNAME
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: DB_NAME
+          - name: DB_HOST
+            value: "10.80.240.3" 
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_SSL_MODE
+            value: "disable"
+          - name: SERVER_HOST
+            value: "0.0.0.0"
+          - name: SERVER_PORT
+            value: "5002"
+          - name: CONCURRENCY
+            value: "2"
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: DB_PASSWORD
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: db-secrets
+                key: JWT_SECRET
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.1
+        args:
+          - "--private-ip"
+          - "--auto-iam-authn"
+          - "--structured-logs"
+          - "--port=5432"
+          - "starter-project-447001:us-central1:starter-project"

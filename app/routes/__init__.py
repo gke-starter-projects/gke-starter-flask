@@ -11,3 +11,4 @@ def register_routes(api):
     api.add_resource(Signup, "/signup")
     api.add_resource(Login, "/login")
     api.add_resource(Tweet, "/tweet")
+    api.add_resource(Health, "/")
