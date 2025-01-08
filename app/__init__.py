@@ -1,7 +1,6 @@
 import logging
 from flask import Flask
 from flask_restful import Api
-from flask_cors import CORS
 from app.config import Config
 
 # Config
@@ -19,9 +18,6 @@ def create_app():
     app.config.from_object(config)
 
     api = Api(catch_all_404s=True)
-
-    # Enable CORS for all domains on all routes
-    CORS(app, supports_credentials=True)
 
     register_hooks(app, api)
     register_routes(api)

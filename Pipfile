@@ -14,7 +14,6 @@ httpx = "*"
 pyjwt = "*"
 flask-bcrypt = "*"
 pydash = "*"
-flask-cors = ">=5.0"
 
 [dev-packages]
 "flake8" = ">=3.7"
