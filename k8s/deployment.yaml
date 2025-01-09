@@ -17,7 +17,7 @@ spec:
       serviceAccountName: cloudsql
       containers:
       - name: gke-starter-flask
-        image: us-central1-docker.pkg.dev/starter-project-447001/starter-project/gke-starter-flask:latest
+        image: <IMAGE_PLACEHOLDER>
         ports:
         - containerPort: 5002
         readinessProbe:
